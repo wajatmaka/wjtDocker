@@ -1,0 +1,52 @@
+#
+# Created : Dwiyan Galuh W
+#
+# dwiyan.wijatmiko@wajatmaka.com
+#
+# Maintenance : Dwiyan Galuh
+
+
+version: "3"
+
+services:
+
+   portainer:
+        image: portainer/portainer
+        ports:
+           - "8443:9000/tcp"
+        command: -H unix:///var/run/docker.sock
+        volumes:
+           - "portainer-data:/log/config/portainer-data"
+           - "/var/run/docker.sock:/var/run/docker.sock"
+        container_name: portainer
+   
+   ruckus-tftp:
+        image: ruckus-tftp
+        build: Docker-Images/tftp/
+        ports:
+           - "69:69/udp"
+        volumes:
+           - "/log/networks/:/var/tftpboot"
+        container_name: ruckus-tftp
+
+   syslog-networks:
+        image: logging.wajatmaka.com:net
+        build: Docker-Images/syslog/
+        ports:
+           - "514:514/udp" #For all switch cisco
+           - "5140:5140/udp" #For asa-a
+           - "5141:5141/udp" #For paloalto-a
+           - "5142:5142/udp" #For Netgear XS716T ProSAFE 16-Port 
+           - "5143:5143/udp" #For Netgear GS724TPv2 ProSAFE 24-Port
+        volumes:
+           - "/log/networks:/var/log/network" #logging stdout
+           - "/log/config/conf.d/networks/asa-a.conf:/etc/syslog-ng/conf.d/networks/asa-a.conf" #configuration
+           - "/log/config/conf.d/networks/switch-cisco.conf:/etc/syslog-ng/conf.d/networks/switch-cisco.conf" #configuration
+           - "/log/config/conf.d/networks/paloalto-a.conf:/etc/syslog-ng/conf.d/networks/paloalto-a.conf" #configuration
+           - "/log/config/conf.d/networks/switch-netgear-a.conf:/etc/syslog-ng/conf.d/networks/switch-netgear-a.conf" #configuration
+           - "/log/config/conf.d/networks/switch-netgear-b.conf:/etc/syslog-ng/conf.d/networks/switch-netgear-b.conf" #configuration
+        container_name: syslog-networks
+
+
+volumes:
+  portainer-data:
