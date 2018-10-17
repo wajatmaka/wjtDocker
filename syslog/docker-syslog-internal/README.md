@@ -1,4 +1,4 @@
-# DOCKER-SYSLOG Firstwap | IMPORTANT !!!#
+# DOCKER-SYSLOG | IMPORTANT !!!#
 
 FHS Docker Syslog-ng :
 ```
