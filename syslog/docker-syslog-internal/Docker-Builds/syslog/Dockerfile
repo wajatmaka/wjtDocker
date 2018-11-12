@@ -20,8 +20,8 @@ RUN sed -i 's/system()/# system()/g' /etc/syslog-ng/syslog-ng.conf
 RUN echo '@include "/etc/syslog-ng/conf.d/networks/*.conf"' >> /etc/syslog-ng/syslog-ng.conf
 RUN echo '@include "/etc/syslog-ng/conf.d/os/*.conf"' >> /etc/syslog-ng/syslog-ng.conf
 
-VOLUME ["/log/config/conf.d/networks",  "/etc/syslog-ng/conf.d/networks"]
-VOLUME ["/log/config/conf.d/os",  "/etc/syslog-ng/conf.d/os"]
+VOLUME ["/docker/conf.d/networks",  "/etc/syslog-ng/conf.d/networks"]
+VOLUME ["/docker/conf.d/os",  "/etc/syslog-ng/conf.d/os"]
 
 
 ENTRYPOINT ["/usr/sbin/syslog-ng","--no-caps","-F"]

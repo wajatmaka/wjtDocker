@@ -10,3 +10,4 @@ VOLUME /data
 ENTRYPOINT ["in.tftpd"]
 
 CMD ["-L", "--verbose", "-u", "root", "--secure", "--create", "/data"]
+

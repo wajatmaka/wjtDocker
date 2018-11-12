@@ -10,24 +10,14 @@ version: "3"
 
 services:
 
-   portainer:
-        image: portainer/portainer
-        ports:
-           - "8443:9000/tcp"
-        command: -H unix:///var/run/docker.sock
-        volumes:
-           - "portainer-data:/log/config/portainer-data"
-           - "/var/run/docker.sock:/var/run/docker.sock"
-        container_name: portainer
-   
-   ruckus-tftp:
-        image: ruckus-tftp
+   tftp-server:
+        image: tftp-server
         build: Docker-Builds/tftp/
         ports:
            - "69:69/udp"
         volumes:
-           - "/log/networks/:/var/tftpboot"
-        container_name: ruckus-tftp
+           - "/data/tftp:/data"
+        container_name: tftp-server
 
    syslog-networks:
         image: logging.wajatmaka.com:net
@@ -41,14 +31,14 @@ services:
            - "5144:5144/udp" #For Router Mikrotik QA DEV | router-mikrotik-b.conf 
            - "5145:5145/udp" #For Netgears M5300-28G3 ProSafe 24-port Gigabit L3 | switch-netgear-b.conf
         volumes:
-           - "/log/networks:/var/log/network" #logging stdout
-           - "/log/config/conf.d/networks/asa-b.conf:/etc/syslog-ng/conf.d/networks/asa-b.conf" #configuration
-           - "/log/config/conf.d/networks/paloalto-b.conf:/etc/syslog-ng/conf.d/networks/paloalto-b.conf" #configuration
-           - "/log/config/conf.d/networks/switch-cisco.conf:/etc/syslog-ng/conf.d/networks/switch-cisco.conf" #configuration
-           - "/log/config/conf.d/networks/switch-netgear-a.conf:/etc/syslog-ng/conf.d/networks/switch-netgear-a.conf" #configuration
-           - "/log/config/conf.d/networks/switch-netgear-b.conf:/etc/syslog-ng/conf.d/networks/switch-netgear-b.conf" #configuration
-           - "/log/config/conf.d/networks/router-mikrotik-a.conf:/etc/syslog-ng/conf.d/networks/router-mikrotik-a.conf" #configuration
-           - "/log/config/conf.d/networks/router-mikrotik-b.conf:/etc/syslog-ng/conf.d/networks/router-mikrotik-b.conf" #configuration
+           - "/data/log/networks:/var/log/network" #logging stdout
+           - "/docker/conf.d/networks/asa-b.conf:/etc/syslog-ng/conf.d/networks/asa-b.conf" #configuration
+           - "/docker/conf.d/networks/paloalto-b.conf:/etc/syslog-ng/conf.d/networks/paloalto-b.conf" #configuration
+           - "/docker/conf.d/networks/switch-cisco.conf:/etc/syslog-ng/conf.d/networks/switch-cisco.conf" #configuration
+           - "/docker/conf.d/networks/switch-netgear-a.conf:/etc/syslog-ng/conf.d/networks/switch-netgear-a.conf" #configuration
+           - "/docker/conf.d/networks/switch-netgear-b.conf:/etc/syslog-ng/conf.d/networks/switch-netgear-b.conf" #configuration
+           - "/docker/conf.d/networks/router-mikrotik-a.conf:/etc/syslog-ng/conf.d/networks/router-mikrotik-a.conf" #configuration
+           - "/docker/conf.d/networks/router-mikrotik-b.conf:/etc/syslog-ng/conf.d/networks/router-mikrotik-b.conf" #configuration
         container_name: syslog-networks
 
    syslog-os:
@@ -57,10 +47,9 @@ services:
         ports:
            - "11:11/udp" #mbsuite.wajatmaka.com
         volumes:
-           - "/log/os:/var/log/os" #logging stdout
-           - "/log/config/conf.d/os/mbsuite.conf:/etc/syslog-ng/conf.d/os/mbsuite.conf" #configuration
+           - "/data/log/os:/var/log/os" #logging stdout
+           - "/docker/conf.d/os/var-global.conf:/etc/syslog-ng/conf.d/os/var-global.conf" #configuration
+           - "/docker/conf.d/os/mbsuite.conf:/etc/syslog-ng/conf.d/os/mbsuite.conf" #configuration
         container_name: syslog-os
 
-volumes:
-  portainer-data:
 

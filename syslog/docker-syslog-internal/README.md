@@ -1,22 +1,33 @@
-# DOCKER-SYSLOG | IMPORTANT !!!#
+# DOCKER-SYSLOG wajatmaka | IMPORTANT !!!#
 
 FHS Docker Syslog-ng :
 ```
-   log
+  /docker
     |
-    |----------config
-    |             |-----conf.d
-                  |-----Docker-Builds
-                             |--syslog
-                             |--tftp
-                  |-----docker-compose.yml
-    |----------network
-    |----------os
+    |
+    |---|-----conf.d
+    |   |-----Docker-Builds
+    |   |          |--syslog
+    |   |          |--tftp
+    |   |-----docker-compose.yml
+
+   /data
+    |
+    |-----log
+    |      |
+    |      |---networks
+    |      |---os
+    |---------backup
+    |           |
+    |           |---bin
+    |           |---data
+    |-----tftp     
+
 ```
 
 
 ## Information ##
-Directory **Config** is important, we can build any service in this directory.
+Directory **/docker** is important, we can build any service in this directory.
 
 
 ### How To Build and Running Service ###
@@ -26,17 +37,17 @@ The following command build and run using docker-compose :
 
 ### Syslog-networks ####
 ** Build **
-> `cd /log/config`
+> `cd /docker`
 > `docker-compose build syslog-networks`
 
 
 ** Running **
-> `cd /log/config`
+> `cd /docker`
 > `docker-compose start syslog-networks`
 
 
 ** Build and Running **
->`cd /log/config`
+>`cd /docker`
 >` docker-compose up -d --build syslog-networks`
 
 
